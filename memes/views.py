@@ -1,12 +1,14 @@
-from django.shortcuts import render
+import json
+
 from django.http import JsonResponse
 from django.http import HttpRequest
 from django.forms.models import model_to_dict
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 from .models import Meme
 from .serializers import MemeSerializer
-import json
 
 
 # simple api
@@ -18,9 +20,17 @@ import json
 #     data = model_to_dict(meme, fields=["name"])
 #     return JsonResponse(data)
 
-# drf api
-@api_view(["GET"])
+# drf api basic serializer
+@api_view(["GET", "POST"])
 def random_meme(req: HttpRequest) -> Response:
-    meme = Meme.objects.first()
-    data = MemeSerializer(meme).data
+    data = {}
+    if req.method == "GET":
+        meme = Meme.objects.all().order_by("?").first()
+        data = MemeSerializer(meme).data
+    else:
+        meme = MemeSerializer(data=req.data)
+        # returns useful response when error.
+        if meme.is_valid(raise_exception=True):
+            meme.save()
+            data = meme.data
     return Response(data)
