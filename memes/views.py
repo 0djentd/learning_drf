@@ -57,11 +57,21 @@ def random_meme(req: HttpRequest) -> response.Response:
 # get, delete
 # class random_meme_cbv(generics.RetrieveDestroyAPIView):
 # get, put, delete
-class _MemeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+# class _MemeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class _MemeDetailAPIView(
+        mixins.CreateModelMixin,
+        mixins.DestroyModelMixin,
+        mixins.UpdateModelMixin,
+        mixins.RetrieveModelMixin,
+        generics.GenericAPIView):
+    # essential
     queryset = Meme.objects.all()
+    # essential
     serializer_class = MemeSerializer
+    # gotta add dat so that there is auth to begin with
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # gotta add dat so that permissions is not default (777)
+    permission_classes = [permissions.DjangoModelPermissions]
 
 meme_detail_view = _MemeDetailAPIView.as_view()
 
@@ -72,6 +82,8 @@ meme_detail_view = _MemeDetailAPIView.as_view()
 class _MemeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 meme_list_create_view = _MemeListCreateAPIView.as_view()
 
