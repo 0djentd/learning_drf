@@ -8,6 +8,7 @@ from rest_framework import generics, mixins, permissions, response, decorators, 
 
 from .models import Meme
 from .serializers import MemeSerializer
+from .permissions import IsMemeAuthorPermission
 
 # TODO:
 # check out drf api doc for:
@@ -59,11 +60,7 @@ def random_meme(req: HttpRequest) -> response.Response:
 # get, put, delete
 # class _MemeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class _MemeDetailAPIView(
-        mixins.CreateModelMixin,
-        mixins.DestroyModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.RetrieveModelMixin,
-        generics.GenericAPIView):
+        generics.RetrieveUpdateDestroyAPIView):
     # essential
     queryset = Meme.objects.all()
     # essential
@@ -71,7 +68,7 @@ class _MemeDetailAPIView(
     # gotta add dat so that there is auth to begin with
     authentication_classes = [authentication.SessionAuthentication]
     # gotta add dat so that permissions is not default (777)
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [IsMemeAuthorPermission]
 
 meme_detail_view = _MemeDetailAPIView.as_view()
 
@@ -83,7 +80,7 @@ class _MemeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.DjangoModelPermissions]
+    permission_classes = [IsMemeAuthorPermission]
 
 meme_list_create_view = _MemeListCreateAPIView.as_view()
 
