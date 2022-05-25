@@ -6,6 +6,7 @@ from django.forms.models import model_to_dict
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
 from .models import Meme
 from .serializers import MemeSerializer
@@ -34,3 +35,18 @@ def random_meme(req: HttpRequest) -> Response:
             meme.save()
             data = meme.data
     return Response(data)
+
+
+# Class-based view.
+# class random_meme_cbv(generics.RetrieveAPIView):
+# class random_meme_cbv(generics.RetrieveUpdateAPIView):
+# class random_meme_cbv(generics.RetrieveDestroyAPIView):
+class random_meme_cbv(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Meme.objects.all()
+    serializer_class = MemeSerializer
+
+
+# class random_meme_cbv_list(generics.ListAPIView):
+class random_meme_cbv_list(generics.ListCreateAPIView):
+    queryset = Meme.objects.all()
+    serializer_class = MemeSerializer
