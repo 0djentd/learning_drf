@@ -38,15 +38,34 @@ def random_meme(req: HttpRequest) -> Response:
 
 
 # Class-based view.
+# get
 # class random_meme_cbv(generics.RetrieveAPIView):
+# get, put
 # class random_meme_cbv(generics.RetrieveUpdateAPIView):
+# get, delete
 # class random_meme_cbv(generics.RetrieveDestroyAPIView):
-class random_meme_cbv(generics.RetrieveUpdateDestroyAPIView):
+# get, put, delete
+class _MemeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
 
+meme_detail_view = _MemeDetailAPIView.as_view()
 
+
+# get
 # class random_meme_cbv_list(generics.ListAPIView):
-class random_meme_cbv_list(generics.ListCreateAPIView):
+# get, post
+class _MemeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
+
+meme_list_create_view = _MemeListCreateAPIView.as_view()
+
+
+# no need if using ListCreateAPIView
+# post
+# class _MemeCreateAPIView(generics.CreateAPIView):
+#     queryset = Meme.objects.all()
+#     serializer_class = MemeSerializer
+#
+# meme_create_view = _MemeCreateAPIView.as_view()
