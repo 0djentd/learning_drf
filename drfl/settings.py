@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'api',
     'memes',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
