@@ -22,4 +22,3 @@ class IsMemeAuthorPermission(permissions.DjangoObjectPermissions):
         if req.user.id == obj.user.id:
             return True
         return False
-

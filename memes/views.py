@@ -31,6 +31,8 @@ from .permissions import IsMemeAuthorPermission
 # ===========
 # api_view decorator + basic serializers usage.
 # ===========
+
+
 @decorators.api_view(["GET", "POST"])
 def random_meme(req: HttpRequest) -> response.Response:
     data = {}
@@ -67,9 +69,11 @@ class _MemeDetailAPIView(
     serializer_class = MemeSerializer
     # gotta add dat so that there is auth to begin with
     # This list means that if there is at least one auth method that is working, it will allow auth. Same thing for permissions.
-    authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+    authentication_classes = [
+        authentication.TokenAuthentication, authentication.SessionAuthentication]
     # gotta add dat so that permissions is not default (777)
     permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
+
 
 meme_detail_view = _MemeDetailAPIView.as_view()
 
@@ -80,8 +84,10 @@ meme_detail_view = _MemeDetailAPIView.as_view()
 class _MemeListCreateAPIView(generics.ListCreateAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
-    authentication_classes = [authentication.TokenAuthentication, authentication.SessionAuthentication]
+    authentication_classes = [
+        authentication.TokenAuthentication, authentication.SessionAuthentication]
     permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
+
 
 meme_list_create_view = _MemeListCreateAPIView.as_view()
 
