@@ -88,9 +88,9 @@ class _MemeListCreateAPIView(
 
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
-    authentication_classes = [
-        authentication.TokenAuthentication, authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
+    # authentication_classes = [
+    #     authentication.TokenAuthentication, authentication.SessionAuthentication]
+    # permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
   
 
 meme_list_create_view = _MemeListCreateAPIView.as_view()
