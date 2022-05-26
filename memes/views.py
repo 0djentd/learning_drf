@@ -10,13 +10,6 @@ from .models import Meme
 from .serializers import MemeSerializer
 from api.mixins import ObjectPermissionsMixin
 
-# TODO:
-# check out drf api doc for:
-# mixins attrs
-# permissions classes (also check out django obj permissions asap)
-# authentication classes
-# how to deploy django (wsgi asgi nginx apache docker)
-
 # ===========
 # basic api.
 # ===========
