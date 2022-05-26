@@ -8,7 +8,7 @@ from rest_framework import generics, mixins, permissions, response, decorators, 
 
 from .models import Meme
 from .serializers import MemeSerializer
-from .permissions import IsMemeAuthorPermission
+from api.mixins import ObjectPermissionsMixin
 
 # TODO:
 # check out drf api doc for:
@@ -62,17 +62,18 @@ def random_meme(req: HttpRequest) -> response.Response:
 # get, put, delete
 # class _MemeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class _MemeDetailAPIView(
+        ObjectPermissionsMixin,
         generics.RetrieveUpdateDestroyAPIView):
     # essential
     queryset = Meme.objects.all()
     # essential
     serializer_class = MemeSerializer
-    # gotta add dat so that there is auth to begin with
-    # This list means that if there is at least one auth method that is working, it will allow auth. Same thing for permissions.
-    authentication_classes = [
-        authentication.TokenAuthentication, authentication.SessionAuthentication]
-    # gotta add dat so that permissions is not default (777)
-    permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
+    # # gotta add dat so that there is auth to begin with
+    # # This list means that if there is at least one auth method that is working, it will allow auth. Same thing for permissions.
+    # authentication_classes = [
+    #     authentication.TokenAuthentication, authentication.SessionAuthentication]
+    # # gotta add dat so that permissions is not default (777)
+    # permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
 
 
 meme_detail_view = _MemeDetailAPIView.as_view()
@@ -81,13 +82,16 @@ meme_detail_view = _MemeDetailAPIView.as_view()
 # get
 # class random_meme_cbv_list(generics.ListAPIView):
 # get, post
-class _MemeListCreateAPIView(generics.ListCreateAPIView):
+class _MemeListCreateAPIView(
+        ObjectPermissionsMixin,
+        generics.ListCreateAPIView):
+
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
     authentication_classes = [
         authentication.TokenAuthentication, authentication.SessionAuthentication]
     permission_classes = [permissions.IsAdminUser, IsMemeAuthorPermission]
-
+  
 
 meme_list_create_view = _MemeListCreateAPIView.as_view()
 
